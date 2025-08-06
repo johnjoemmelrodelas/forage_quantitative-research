@@ -21,8 +21,9 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 class NatGas_TSA():
     def __init__(self, filename):
+        warnings.filterwarnings("ignore")
         self.filename = filename
-        self.y_train, self.y_test = self.Clean_Data()
+        self.y, self.y_train, self.y_test = self.Clean_Data()
         self.model = self.Create_Model()
 
     def Clean_Data(self):
@@ -38,7 +39,7 @@ class NatGas_TSA():
         y_train = y.iloc[:int(len(y) * cutoff)]
         y_test = y.iloc[int(len(y) * cutoff):]
         
-        return y_train, y_test
+        return y, y_train, y_test
     
     def Create_Model(self):      
         y_pred_wfv = pd.Series()
@@ -75,7 +76,7 @@ class NatGas_TSA():
 
         forecast_index = forecast_values.index
         plt.figure(figsize=(15, 5))
-        plt.plot(y, label='Historical')
+        plt.plot(self.y, label='Historical')
         plt.plot(forecast_values, label='Forecast', color='orange')
         plt.fill_between(
             forecast_index,
@@ -89,4 +90,5 @@ class NatGas_TSA():
         plt.xlabel('Dates')
         plt.ylabel('Prices')
         plt.title("SARIMAX Forecast")
+        
         return plt.show()
