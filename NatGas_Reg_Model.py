@@ -21,7 +21,6 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 class NatGas_TSA():
     def __init__(self, filename):
-        warnings.filterwarnings("ignore")
         self.filename = filename
         self.y, self.y_train, self.y_test = self.Clean_Data()
         self.model = self.Create_Model()
@@ -42,9 +41,11 @@ class NatGas_TSA():
         return y, y_train, y_test
     
     def Create_Model(self):      
+
         y_pred_wfv = pd.Series()
         history = self.y_train.copy()
         for i in range(len(self.y_test)):
+            warnings.filterwarnings("ignore")
             model = SARIMAX(history, order=(1, 1, 0), seasonal_order=(2, 0, 0, 12)).fit()
             next_pred = model.forecast()
             y_pred_wfv = pd.concat([y_pred_wfv,next_pred])
