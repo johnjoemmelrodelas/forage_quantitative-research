@@ -27,7 +27,7 @@ class NatGas_TSA():
 
     def Clean_Data(self):
         # load File
-        base_df = pd.read_csv('Nat_Gas.csv')
+        base_df = pd.read_csv('nat_gas_data.csv')
         clean_df = base_df.copy() # Preserve original loaded dataset through copy
         clean_df['Dates'] = pd.to_datetime(clean_df['Dates'], format='%m/%d/%y') # Parse date column from object to datetime
         clean_df = clean_df.set_index('Dates') 
